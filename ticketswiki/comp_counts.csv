@@ -1,0 +1,48 @@
+2944,Documentation
+2132,"Database layer (models, ORM)"
+2094,contrib.admin
+1456,Core (Other)
+1135,Uncategorized
+929,Forms
+748,Template system
+565,Translations
+465,Testing framework
+411,Internationalization
+409,Contrib apps
+376,Core (Management commands)
+373,Djangoproject.com Web site
+275,GIS
+262,contrib.auth
+260,Generic views
+240,HTTP handling
+192,Core (Cache system)
+156,contrib.localflavor
+136,contrib.comments
+134,Core (Serialization)
+130,File uploads/storage
+115,Tools
+110,Metasystem
+87,contrib.syndication
+86,Validators
+80,Core (Mail)
+78,ORM aggregation
+71,contrib.formtools
+65,contrib.sessions
+42,django-admin.py runserver
+40,contrib.contenttypes
+31,contrib.databrowse
+25,contrib.staticfiles
+21,django-admin.py inspectdb
+17,contrib.csrf
+14,contrib.sitemaps
+11,contrib.sites
+11,contrib.humanize
+9,contrib.flatpages
+8,contrib.markup
+8,Python 3
+7,contrib.messages
+5,User Experience
+3,contrib.webdesign
+3,contrib.admindocs
+2,contrib.redirects
+1,Interface d'Admin

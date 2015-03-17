@@ -1,0 +1,207 @@
+<><><><><><><><><><><><><><><><><>Django RPC<><><><><><><><><><><><><><><><><>
+
+Python 3 Usage:
+
+from xmlrpc import client
+...
+s = ServerProxy('https://{username}:{password}@code.djangoproject.com/login/rpc')
+..
+s.{function}
+
+<><><><><><><><><><><><><><><><><>Functions<><><><><><><><><><><><><><><><><><>
+
+Notes:
+ - # means not useful, depreciated, or not implemented
+ - indented information is the results of calling the function with certain args
+Useful Sites:
+ - https://code.djangoproject.com/wiki/OpenData
+ - https://code.djangoproject.com/rpc
+ - http://trac.edgewall.org/wiki/TracQuery
+
+SEARCH
+s.search.getSearchFilters()
+    [['ticket', 'Tickets'], ['milestone', 'Milestones'], ['changeset', 'Changesets'], ['wiki', 'Wiki']]
+s.search.performSearch()
+    {seems to be a text search for the above categories}
+
+SYSTEM
+s.system.multicall()
+    {can call multiple functions at once}
+s.system.listMethods()
+    ['system.multicall', 'system.listMethods', 'system.methodHelp', 'system.methodSignature', 'system.getAPIVersion', 'ticket.query', 'ticket.getRecentChanges', 'ticket.getAvailableActions', 'ticket.getActions', 'ticket.get', 'ticket.create', 'ticket.update', 'ticket.delete', 'ticket.changeLog', 'ticket.listAttachments', 'ticket.getAttachment', 'ticket.putAttachment', 'ticket.deleteAttachment', 'ticket.getTicketFields', 'ticket.status.getAll', 'ticket.status.get', 'ticket.status.delete', 'ticket.status.create', 'ticket.status.update', 'ticket.component.getAll', 'ticket.component.get', 'ticket.component.delete', 'ticket.component.create', 'ticket.component.update', 'ticket.version.getAll', 'ticket.version.get', 'ticket.version.delete', 'ticket.version.create', 'ticket.version.update', 'ticket.milestone.getAll', 'ticket.milestone.get', 'ticket.milestone.delete', 'ticket.milestone.create', 'ticket.milestone.update', 'ticket.type.getAll', 'ticket.type.get', 'ticket.type.delete', 'ticket.type.create', 'ticket.type.update', 'ticket.resolution.getAll', 'ticket.resolution.get', 'ticket.resolution.delete', 'ticket.resolution.create', 'ticket.resolution.update', 'ticket.priority.getAll', 'ticket.priority.get', 'ticket.priority.delete', 'ticket.priority.create', 'ticket.priority.update', 'ticket.severity.getAll', 'ticket.severity.get', 'ticket.severity.delete', 'ticket.severity.create', 'ticket.severity.update', 'wiki.getRecentChanges', 'wiki.getRPCVersionSupported', 'wiki.getPage', 'wiki.getPageVersion', 'wiki.getPageHTML', 'wiki.getPageHTMLVersion', 'wiki.getAllPages', 'wiki.getPageInfo', 'wiki.getPageInfoVersion', 'wiki.putPage', 'wiki.listAttachments', 'wiki.getAttachment', 'wiki.putAttachment', 'wiki.putAttachmentEx', 'wiki.deletePage', 'wiki.deleteAttachment', 'wiki.listLinks', 'wiki.wikiToHtml', 'search.getSearchFilters', 'search.performSearch']
+s.system.methodHelp()
+    struct wiki.getRecentChanges(dateTime.iso8601 since)
+s.system.methodSignature()
+    Get list of changed pages since timestamp 
+    ['struct,dateTime.iso8601']
+s.system.getAPIVersion()
+    [1, 1, 0]
+
+TICKET
+s.ticket.query()
+    [23, 25, 27, 29, 56, 159, 373, 494, 640, 702, 897, 937, 1028, 1199, 1286, 1327, 1453, 1873, 1891, 1908, 1919, 2131, 2137, 2227, 2259, 2284, 2304, 2316, 2417, 2438, 2443, 2445, 2495, 2504, 2539, 2550, 2594, 2615, 2618, 2626, 2651, 2688, 2713, 2750, 2843, 2856, 2879, 2901, 2905, 2948, 3006, 3011, 3055, 3100, 3111, 3148, 3189, 3202, 3214, 3240, 3254, 3343, 3422, 3461, 3470, 3485, 3542, 3544, 3569, 3570, 3591, 3680, 3871, 3881, 3997, 4045, 4065, 4070, 4102, 4117, 4120, 4136, 4140, 4147, 4192, 4278, 4282, 4287, 4363, 4467, 4492, 4499, 4501, 4528, 4574, 4592, 4656, 4680, 4746, 4833]
+s.ticket.getRecentChanges()
+    [17165, 15574, 14093, 8165]
+#s.ticket.getAvailableActions()
+s.ticket.getActions()
+    [['leave', 'leave', '.', []], ['reopen', 'reopen', "The resolution will be deleted. Next status will be 'reopened'.", []]]
+s.ticket.get()
+    1
+    20050713T19:03:27
+    20110420T16:43:38
+    {'status': 'closed', 'changetime': <DateTime '20110420T16:43:38' at 253d6d8>, 'type': 'enhancement', 'description': "We need an architecture for anonymous sessions. Right now we have django.models.auth.sessions, but that only handles registered users' sessions. We need a system that automatically creates and manages sessions for anonymous users.\n\nHere's one idea for this:\n\n * In the settings file, you define a {{{SESSION_MODULE}}} string, like the {{{AUTH_PROFILE_MODULE}}}, which points to the model to use for sessions.\n * Using this, httpwrappers automatically creates a request.session object which is persistant across requests based on cookies, etc.", 'severity': 'normal', 'reporter': 'adrian', 'cc': 'frido.ferdinand@gmail.com', 'needs_better_patch': '0', 'component': 'Core (Other)', 'needs_tests': '0', 'summary': 'Create architecture for anonymous sessions', 'owner': 'jacob', 'version': '', 'time': <DateTime '20050713T19:03:27' at 253d710>, 'keywords': '', 'needs_docs': '0', 'has_patch': '0', 'resolution': 'fixed', 'stage': 'Unreviewed'}
+#s.ticket.create()
+#s.ticket.update()
+#s.ticket.delete()
+s.ticket.changeLog()
+    [[<DateTime '20050717T21:51:00' at 2659630>, 'Ksenia', 'comment', '', 'WSGI session middleware can also be used for this (when WSGI support will be available :)', 1], 
+     [<DateTime '20050729T20:21:59' at 2659668>, 'maurycy', 'comment', '', "Besides lack of the anonymous sessions, which is described in the first ticket,\nwe have together two problems with the sessions. The second is demand to\nreimplement sessions code as often as we need to merge them with other model,\nlike django.models.auth.sessions.\n\nIf I understand correctly, the current adrian's idea assumes creating the\nglobal session model for every anonymous client, made through httpwrappers.\nI see a few potential limitations. One, it seriously reduces flexibility\nof the sessions. With the constant declared keys, we cannot add an another\nduring work. Two, modifing httpwrapers on our every whin certainly won't\nincrease quality of the code.\n\nMy proposals are a bit different.\n\nGenerally, idea of making the sessions the models is good, but their\nflexibility should be built-in and enforced. Users should not design\nthem. Writing the not tested Python, pseudo code:\n\n{{{\nclass Session(meta.Model):\n  fields = (\n    meta.CharField('session_md5', 'session MD5 hash', maxlength=32),\n    meta.DateTimeField('start_time', 'start time', auto_now=True),\n    meta.DateTimeField('time_to_live', 'time_to_live')\n  )\n\nclass Field(meta.Model):\n  fields = (\n    meta.ForeignKey(Session),\n    meta.CharField('key', 'key of the field', maxlenght=64),\n    meta.TextField('value', 'value of the field', maxlength=64),\n  )\n}}}\n\nNow, we're not limited with the declared fields. We can extend the base\nmodel no matter how.\n\nThen, working with the sessions would looks like:\n\n{{{\nimport django.models.products import products\nimport django.models.sessions import sessions\n\ndef test(request):\n    try:\n        session = sessions.Session(name='just_a_test')\n    expect sessions.SessionDoesNotExist:\n        return HttpResponseRedirect('not/logged')\n\n    session.add_field(key='rocco', value='rocco is the best')\n    session.save()\n}}}\n\nAs careful readers would point, there's no playing with the cookies and\nsetting the time to live. It should be obviously done after creationg of the\nobject. At the moment, I don't have idea how to make it, but I don't think\nit'll be the problem to add some kind of _post_creation() method.\n\nThe httpwrappers accusation is easier to respond. The middleware has been\ninvented for this kind of challenges. Anonymous session can be then created\nautomatically after every request by our new middleware class, which would\ntake care on them. If you don't need anonymous sessions, you simply do not set\nMIDDLEWARE_CLASSES.\n\nFeel free to comment.", 1], 
+     [<DateTime '20050730T00:32:03' at 26596a0>, 'mmarshall', 'comment', '', 'From my limited knowledge and experience, it looks good.  Although, the first thing I would do would be to subclass sessions.Session to support something like """ session[\'rocco\']=\'rocco is the best!\' """  ;-)\n\nMWM', 1], 
+     [<DateTime '20050801T20:11:46' at 2659a20>, 'james', 'comment', '', 'well the one true thing that I need in django is handling session, i mean storing in session form objects, passwords and other stuff, i wish you everything good.', 1], 
+     [<DateTime '20050803T01:30:48' at 265fa90>, 'jacob', 'milestone', '', 'Version 1.0', 1], 
+     [<DateTime '20050803T01:30:48' at 265fac8>, 'jacob', 'owner', 'adrian', 'jacob', 1], 
+     [<DateTime '20050803T01:30:48' at 265fb00>, 'jacob', 'status', 'new', 'assigned', 1], 
+     [<DateTime '20050807T10:56:56' at 265fb38>, 'Manuzhai', 'comment', '', 'Hmm, I think it should be possible to do session.field = value, which may preclude session from being a normal meta.Model descendent. That would be alright, though - it *is* special, after all. And I think there should be ways to set TTL and other stuff like that.', 1], 
+     [<DateTime '20050809T09:09:15' at 265fb70>, 'anonymous', 'cc', '', 'frido.ferdinand@gmail.com', 1], 
+     [<DateTime '20050816T22:54:07' at 265fbe0>, 'adrian', 'comment', '', "(In [518]) Fixed #1 -- Added anonymous session support via middleware and request.session. Removed the former request.session, which wasn't being used anyway. Removed auth.Session model. See the BackwardsIncompatibleChanges wiki page for IMPORTANT notes on code you'll have to change and a DB table you'll have to create.", 1], 
+     [<DateTime '20050816T22:54:07' at 265fc18>, 'adrian', 'status', 'assigned', 'closed', 1], 
+     [<DateTime '20050816T22:54:07' at 265fc50>, 'adrian', 'resolution', '', 'fixed', 1], 
+     [<DateTime '20070117T22:12:17' at 265fc88>, '', 'comment', '', 'Milestone Version 1.0 deleted', 1], 
+     [<DateTime '20070117T22:12:17' at 265fcc0>, '', 'milestone', 'Version 1.0', '', 1], 
+     [<DateTime '20070206T14:09:06' at 265fcf8>, 'jacob', 'comment', '10', "(In [4462]) Trivial whitespace chance to AUTHORS to test the trac commit hook.  Refs #1 also for testing, but it doesn't really.", 1], 
+     [<DateTime '20070206T15:31:54' at 265fd30>, 'anonymous', 'status', 'closed', 'reopened', 1], 
+     [<DateTime '20070206T15:31:54' at 265fd68>, 'anonymous', 'comment', '11', 'Testing reopen - ignore, please...', 1], 
+     [<DateTime '20070206T15:31:54' at 265fda0>, 'anonymous', 'resolution', 'fixed', '', 1], 
+     [<DateTime '20070206T15:32:17' at 265fdd8>, 'jacob', 'comment', '12', 'Refixing; looks like it works.', 1], 
+     [<DateTime '20070206T15:32:17' at 265fe10>, 'jacob', 'resolution', '', 'fixed', 1], 
+     [<DateTime '20070206T15:32:17' at 265fe48>, 'jacob', 'status', 'reopened', 'closed', 1], 
+     [<DateTime '20110420T16:43:38' at 265fe80>, 'anonymous', 'comment', '13', 'Test - ignore (JKM).', 1]]
+s.ticket.listAttachments()
+    []
+#s.ticket.getAttachment()
+#s.ticket.putAttachment()
+#s.ticket.deleteAttachment()
+s.ticket.getTicketFields()
+    {'type': 'text', 'name': 'summary', 'label': 'Summary'}
+    {'type': 'text', 'name': 'reporter', 'label': 'Reporter'}
+    {'type': 'text', 'name': 'owner', 'label': 'Owner'}
+    {'type': 'textarea', 'name': 'description', 'label': 'Description'}
+    {'name': 'type', 'type': 'select', 'options': ['Uncategorized', 'Bug', 'New feature', 'Cleanup/optimization'], 'value': 'bug / defect', 'label': 'Type'}
+    {'name': 'status', 'type': 'radio', 'value': '', 'label': 'Status', 'optional': True, 'options': ['assigned', 'closed', 'new', 'reopened']}
+    {'name': 'component', 'type': 'select', 'options': ['contrib.admin', 'contrib.admindocs', 'contrib.auth', 'contrib.comments', 'contrib.contenttypes', 'contrib.csrf', 'contrib.databrowse', 'contrib.flatpages', 'contrib.formtools', 'contrib.humanize', 'contrib.localflavor', 'contrib.markup', 'contrib.messages', 'contrib.redirects', 'contrib.sessions', 'contrib.sitemaps', 'contrib.sites', 'contrib.staticfiles', 'contrib.syndication', 'contrib.webdesign', 'Core (Cache system)', 'Core (Mail)', 'Core (Management commands)', 'Core (Other)', 'Core (Serialization)', 'Core (URLs)', 'Database layer (models, ORM)', 'Djangoproject.com Web site', 'Documentation', 'File uploads/storage', 'Forms', 'Generic views', 'GIS', 'HTTP handling', 'Internationalization', 'ORM aggregation', 'Python 3', 'Template system', 'Testing framework', 'Translations', 'Uncategorized'], 'value': 'Uncategorized', 'label': 'Component'}
+    {'name': 'version', 'type': 'select', 'value': '1.3', 'label': 'Version', 'optional': True, 'options': ['SVN', '1.3-beta', '1.3-alpha', '1.2-beta', '1.2-alpha', '1.2', '1.1-beta-1', '1.1', '1.0-beta-1', '1.0-alpha-2', '1.0-alpha', '1.0', '0.96', '0.95', '1.3', '1.3-rc1']}
+    {'name': 'severity', 'type': 'select', 'options': ['Normal', 'Release blocker'], 'value': '', 'label': 'Severity'}
+    {'name': 'resolution', 'type': 'radio', 'value': 'fixed', 'label': 'Resolution', 'optional': True, 'options': ['fixed', 'invalid', 'wontfix', 'duplicate', 'worksforme', 'needsinfo']}
+    {'type': 'text', 'name': 'keywords', 'label': 'Keywords'}
+    {'type': 'text', 'name': 'cc', 'label': 'Cc'}
+    {'type': 'time', 'name': 'time', 'label': 'Created'}
+    {'type': 'time', 'name': 'changetime', 'label': 'Modified'}
+    {'name': 'stage', 'value': '0', 'custom': True, 'order': 10, 'label': 'Triage Stage', 'type': 'select', 'options': ['Unreviewed', 'Design decision needed', 'Accepted', 'Ready for checkin', 'Someday/Maybe', 'Fixed on a branch']}
+    {'name': 'has_patch', 'value': '', 'custom': True, 'label': 'Has patch', 'type': 'checkbox', 'order': 20}
+    {'name': 'needs_docs', 'value': '', 'custom': True, 'label': 'Needs documentation', 'type': 'checkbox', 'order': 30}
+    {'name': 'needs_tests', 'value': '', 'custom': True, 'label': 'Needs tests', 'type': 'checkbox', 'order': 40}
+    {'name': 'needs_better_patch', 'value': '', 'custom': True, 'label': 'Patch needs improvement', 'type': 'checkbox', 'order': 50}
+    {'name': 'easy', 'value': '', 'custom': True, 'label': 'Easy pickings', 'type': 'checkbox', 'order': 60}
+    {'name': 'ui_ux', 'value': '', 'custom': True, 'label': 'UI/UX', 'type': 'checkbox', 'order': 70}
+
+TICKET.COMPONENT
+s.ticket.component.getAll()
+    ['contrib.admin', 'contrib.admindocs', 'contrib.auth', 'contrib.comments', 'contrib.contenttypes', 'contrib.csrf', 'contrib.databrowse', 'contrib.flatpages', 'contrib.formtools', 'contrib.humanize', 'contrib.localflavor', 'contrib.markup', 'contrib.messages', 'contrib.redirects', 'contrib.sessions', 'contrib.sitemaps', 'contrib.sites', 'contrib.staticfiles', 'contrib.syndication', 'contrib.webdesign', 'Core (Cache system)', 'Core (Mail)', 'Core (Management commands)', 'Core (Other)', 'Core (Serialization)', 'Core (URLs)', 'Database layer (models, ORM)', 'Djangoproject.com Web site', 'Documentation', 'File uploads/storage', 'Forms', 'Generic views', 'GIS', 'HTTP handling', 'Internationalization', 'ORM aggregation', 'Python 3', 'Template system', 'Testing framework', 'Translations', 'Uncategorized']
+s.ticket.component.get()
+    {'owner': 'nobody', 'name': 'contrib.admin', 'description': ''}
+#s.ticket.component.delete()
+#s.ticket.component.create()
+#s.ticket.component.update()
+
+TICKET.MILESTONE
+s.ticket.milestone.getAll()
+    []
+s.ticket.milestone.get()
+#s.ticket.milestone.delete()
+#s.ticket.milestone.create()
+#s.ticket.milestone.update()
+
+TICKET.PRIORITY
+s.ticket.priority.getAll()
+    []
+s.ticket.priority.get()
+#s.ticket.priority.delete()
+#s.ticket.priority.create()
+#s.ticket.priority.update()
+
+TICKET.RESOLUTION
+s.ticket.resolution.getAll()
+    ['fixed', 'invalid', 'wontfix', 'duplicate', 'worksforme', 'needsinfo']
+s.ticket.resolution.get()
+    1
+#s.ticket.resolution.delete()
+#s.ticket.resolution.create()
+#s.ticket.resolution.update()
+
+TICKET.SEVERITY
+s.ticket.severity.getAll()
+    ['Normal', 'Release blocker']
+s.ticket.severity.get()
+    1
+#s.ticket.severity.delete()
+#s.ticket.severity.create()
+#s.ticket.severity.update()
+
+TICKET.STATUS
+s.ticket.status.getll()
+    ['assigned', 'closed', 'new', 'reopened']
+#s.ticket.status.get()
+    0
+#s.ticket.status.delete()
+#s.ticket.status.create()
+#s.ticket.status.update()
+
+TICKET.TYPE
+s.ticket.type.getAll()
+    ['Uncategorized', 'Bug', 'New feature', 'Cleanup/optimization']
+s.ticket.type.get()
+    1
+#s.ticket.type.delete()
+#s.ticket.type.create()
+#s.ticket.type.update()
+
+TICKET.VERSION
+s.ticket.version.getAll()
+    ['SVN', '1.3-beta', '1.3-alpha', '1.2-beta', '1.2-alpha', '1.2', '1.1-beta-1', '1.1', '1.0-beta-1', '1.0-alpha-2', '1.0-alpha', '1.0', '0.96', '0.95', '1.3', '1.3-rc1']
+s.ticket.version.get()
+    {'description': '', 'name': 'SVN', 'time': 0}
+#s.ticket.version.delete()
+#s.ticket.version.create()
+#s.ticket.version.update()
+
+WIKI
+s.wiki.getRecentChanges()
+    {can't get this to work - bug?}
+#s.wiki.getRPCVersionSupported()
+#s.wiki.getPage()
+s.wiki.getPageVersion()
+    {returns the content of the page as a string}
+#s.wiki.getPageHTML()
+s.wiki.getAllPages()
+    ['DjangoDocumentKoreanTranslation/authentication', 'StripWhitespaceMiddleware', 'Scaffolding', 'RemovingTheMagic', 'JSON-RPC', 'TracInterfaceCustomization', 'ClassBasedViews', 'CookBookValidators', 'GoFlow:demo', 'Tutorials', 'DjangoScreencasts', 'CookBookValidateImageSize', 'MindmapCheatsheetForGenericViewsAPI', 'GeoDjangoUbuntuInstall', 'DjangoAndNginx', 'FutureBackwardsIncompatibleChanges', 'QuerysetRefactorBranch', 'TestingGuide', 'WebServices', 'RowLevelPermissionsDeveloper', 'FeatureGrouping', 'DocPtDatabaseAPI', 'OSCON2007', 'DjangoSpecifications', 'ContinuousIntegrationSetup', 'goflow:leave', 'NewManipulators', 'WikiRestructuredTextLinks', 'PythonScriptForParsingSettings', 'Version1.2Roadmap', 'TracTicketsCustomFields', 'ScaffoldScript', 'WikiPageNames', 'CommonPitfalls', 'JSONRPCServerMiddleware', 'DjangoDocumentKoreanTranslation', 'TracGuide', 'SerializationExamples', 'ChineseDjangoTutorial', 'ColumnizeTag', 'YUI-Django-Dialog', 'ModelSyntaxChangeInstructions', 'RichTextField', 'TracRoadmap', 'DescriptorFields', 'Sprint1Dec2007', 'AJAXForeignKey', 'Sprints', 'CookBookPasswordHasherJS', 'DocPtRedirects', 'CookBookDeveloperTools', 'TutorialInBrazilianPortuguese', 'PaginatorTag', 'AgnosticHtml', 'CookBookNewFormsDynamicFields', 'TracImport', 'FileStorageRefactor', 'OGRGeometry', 'TracTickets', 'DjangoJobs', 'LinkifyFilter', 'CookbookCloningDjango', 'L10nFormatsStatus1.2', 'WikiFormatting', 'TracEnvironment', 'InitialSQLDataDiangoORMWay', 'NewAdminChanges', 'TracSearch', 'GeoDjangoFedora10Install', 'metadata', 'DjangoSpecifications/Core/Threading', 'IntegrityError', 'GeoDjango1.1', 'RowLevelPermissions', 'GeoDjango1.2', 'SnakesAndRubiesTranscript/Introduction', 'Fixtures', 'CookBookManipulatorWithHiddenFields', 'TracStandalone', 'MacPorts', 'DjangoBashAutocompletion', 'Model_metadata', 'ThinkhostSetup', 'ProfilingDjango', 'TrabalhandoComGroupBy', 'TracNavigation', 'DjangoDocumentKoreanTranslation/tutorial02.txt', 'DjangoBot', 'TicketClosingReasons/UseSupportChannels', 'Emacs', 'DjangoInFinland', 'FreeComments', 'DocItRequestResponse', 'InitdScriptForGentooLinux', 'CookBookNewForms', 'ReusableAppResources', 'GoFlow/sampleprocess', 'CatchTag', 'Dia2Django', 'GreasemonkeyScriptForSmallTitles', 'Sprint2011Berlin', 'ContributedMiddleware', 'SortedDict', 'InterTrac', 'BasicComparisonFilters', 'InterNationalization', 'DocItInstall', 'DeclarandoModelForms', 'NicEditNoAdmin', 'Signing', 'DjangoSuccessStoryBitbucket', 'WikiProcessors', 'UnicodeInDjango', 'Sprint201111TriangleNC', 'DjangoApps', 'DjangoDocumentKoreanTranslation/faq-ko.txt', 'KSSInDjango', 'SprintIsraelAugust2008/og', 'SnakesAndRubiesTranscript', 'DjangoDocumentKoreanTranslation/modpython.txt', 'GoFlow/applications', 'WikiDeletePage', 'DataModelPitfalls', 'ReplacingGetAbsoluteUrl', 'CookBookGenericAttribute', 'DbDumpScript', 'CollaborateOnGithub', 'GeoDjangoFedoraInstall', 'Sprint2011JanAustin', 'NewbieMistakes', 'CookBookChoicesContantsClass', 'GEOSGeometry', 'FormGenScript', 'AdminBasico', 'TracWorkflow', 'SummerOfCode2009', 'AjaxDjangoYUI', 'FazendoSessaoExpirarAoFecharNavegador', 'CookBookDualSessionMiddleware', 'PolishLocalflavor', 'DosAndDontsForApplicationWriters', 'DjangoUsers', 'MultipleAuthBackends', 'VersionOneReleasePartyHelsinki', 'GoFlow_DocFr', 'DjangoDocumentKoreanTranslation/overview.txt', 'CookBookPreloadRelated', 'SprintEuroPython2008', 'AutoAllApps', 'TextIndexingAbstractionLayer', 'CamelCase', 'MultiHostMiddleware', 'VisualizingDjangoChangesetDependencies', 'DjangoDocumentKoreanTranslation/frontpage', 'DocPtTutorial2', 'DocPtTutorial3', 'CookBookTemplateTags', 'DocPtTutorial1', 'DjangoSettingsBashFunction', 'Sprint201003Argentina', 'TemplatedForm', 'CurrentTutorialIdeas', 'DjangoDocumentKoreanTranslation/modpython-ko.txt', 'GoFlow_Doc', 'TracPermissions', 'TracUpgrade', 'DocPtOverview', 'DatabaseReset', 'BranchPolicy', 'Version1.3Roadmap', 'SimonWillison', 'WikiStart', 'Sprint14Sep', 'WorldOnline', 'AjaxHelpers', 'TracModPython', 'ServerArrangements', 'NoSqlSupport', 'TracBrowser', 'TracRepositoryAdmin', 'CookBookCategoryDataModelPostMagic', 'Sprint201106Argentina', 'DurationField', 'FreeComment', 'GeoDjangoExtras', 'SprintTemplate', 'UserHasABadMotivator', 'CookBookTestingTools', '1.2DocumentationSprint', 'TracSupport', 'WikiHtml', 'Charts', 'contentBBCode_parser', 'DjangoCon', 'meta', 'CriandoViewsExtensiveis', 'GenericAuthorization', 'ExtendedUserModel', 'HttpRequest', 'UniqueSlugValidator', 'InterWiki', 'DevelopersForHire', 'DjangoSpecifications/Core/SingleInstance', 'DjangoDocumentKoreanTranslation/faq.txt', 'ContributingHowTo', 'AJAX/Dojo/RefactoredFormSubmit', 'DjangoOnWindows', 'LittleEasyImprovements', 'PasswordField', 'PatchesForConsideration', 'WindowsInstall', 'TemplatePitfalls', 'PatchGuidelines', 'TracAccessibility', 'Sprint200912Dallas', 'SummerOfCode2010', 'SummerOfCode2011', 'CompilationOfTutorials', 'DjangoResources', 'TicketChangeHelp', 'CookBookAdminTools', 'ShortcutSyntaxIdeas', 'DjangoDocumentKoreanTranslation/authentication-ko.txt', 'People', 'Django-JSON-RPC', 'django_apache_and_mod_rewrite', 'ModelMiddleware', 'JeremyDunckToDo', 'OpenData', 'AddWYSIWYGEditor', 'CustomWidgetsTinyMCE', 'GoFlow:applications', 'OrQueryBuilder', 'TracInstall', 'GeoDjangoDatabaseAPI', 'CookBookShortcutsOpenIDAuthentication', 'WikiRestructuredText', 'soc2009-admin-ui', 'DjangoSpecifications/AppGuidelines', 'NewForms', 'TutorialDjangoStack', 'DjangoSuccessStoryHudora', 'DjangoSpecifications/NfAdmin/MediaAndValidation', 'OsxFcgi', 'DjangoSuccessStories', 'Localization', 'DjangoPoweredSites),', 'DjangoAndPyPy', 'SchemaEvolutionProposal', 'Sprint2011DjangoConEU', 'DjangoSuccessStoryPbsTeacherLine', 'SimplePrintAppForDebugging', 'VersionOneRoadmap', 'PylibmcSupport', 'newforms', 'BadContent', 'GoFlow', 'CompositePrimaryKeyModelNotes', 'CookBookTemplateTagTranslation', 'SafeSettingsContextProcessor', 'CookBookTemplateFilterBBCode', 'DjangoWarts', 'IrcFAQ', 'DjangoDocumentKoreanTranslation/install-ko.txt', 'GeoDjango', 'TracReports', 'RunningDjangoTests', 'SprintLondonAugust2008', 'InstallationPitfalls', 'ManipulatorScript', 'TracPlugins', 'HelpfulResponses', 'Simplistic_json_rpc-dispatcher', 'NewformsAdminBranch', 'DocumentationSuggestions', 'SnippetsEmu', 'ActiveRecord', 'TracFastCgi', 'NamespaceSimplification', 'SprintPyCon2008', 'CookBookCategoryDataModel', 'Sprint201012Berlin', 'DevModelCreation', 'CookBookViews', 'TOC()', 'AutoEscape alternative', 'CookBookTreeStructure', 'ThumbNails', 'Version1.1Roadmap', 'ObtendoObjetoComValidacao', 'UsingFreeComment', 'GeoDjangoInstall', 'SandBox', 'DjangoDocumentKoreanTranslation/overview-ko.txt', 'DjangoCheatSheet', 'AjaxPrototypeNewForms', 'MagicRemovalCheatSheet1', 'DocumentationRedirects', 'Jsonrpc', 'ComoHerdarClassesDeModelo', 'TracInstallPlatforms', 'Reports', 'DjangoTraining', 'TracTimeline', 'DebuggingDjangoWithWinpdb', 'GeoDjangoDiscussion', 'TracBackup', 'AdminUserRequired', 'CookBookURLConfiguration', 'GeoDjangoModelAPI', 'SprintIsraelAugust2008', 'StringEncoding', 'WikiNewPage', 'DocPtModelAPI', 'CookBookScriptsMiniFlush', 'BrazilianVocabulary', 'SoftwareDeveloper', 'Signals', 'SnakesAndRubiesTranscript/DjangoPresentation', 'TracModWSGI', 'InterMapTxt', 'DjangoNonrelChanges', 'CookBookScriptsDjget', 'SprintIdeas', 'DjangoBrasil', 'MultipleColumnPrimaryKeys', 'DjangoSpecifications/Contrib/Sessions', 'UnitOfWork', 'AuditTrail', 'MochiKit', 'ClassDecoratorTags', 'GoogleCodeIn2010', 'ModelInheritance', 'SprintDCAugust2008', 'WikiMacroList', 'PageTemplates', 'DjangoGraphviz', 'TracAdmin', 'DjangoDocumentKoreanTranslation/install.txt', 'SimpleBashScriptToSetupDevelopmentEnvironment', 'ActiveBranches', 'PyifTag', 'Sprint201002Montreal', 'ModifiedPreorderTreeTraversalInAdmin', 'DjangoSuccessStorySafesystem', 'XML-RPC', 'Distributions', 'GeoDjangoDebianLennyInstall', 'SprintLawrenceAugust2008', 'PsycoMiddleware', 'BackwardsIncompatibleChanges', 'DjangoDocumentKoreanTranslation/overview', 'CookBookShortcutsPageDecorator', 'Sprint2011PyCon', 'MarioGonzalez', 'CookBookLabels', 'MercurialBranches', 'TracSyntaxColoring', 'DjangoInPortuguese', 'ChoicesList', 'SessionMessages', 'BetterErrorMessages', 'LoadBalancing', 'TracQuery', 'CookBookPasswordGreasemonkeyUserScript', 'AlterModelOnSyncDB', 'TracWiki', 'ComoAdicionarVariaveisAoContexto', 'DeveloperDocs', 'DjangoDesign', 'SchemaEvolutionDocumentation', 'TitleIndex', 'DjangoSuccessStoryAllurstuff', 'HackingTrac', 'DjangoOnWindowsWithAbyss', 'IrcDjangoFi', 'DocPtInstall', 'DjangoOnWindowsWithIISAndSQLServer', 'DjangoDocumentKoreanTranslation/modpython', 'EuroPython2009Sprint', 'ReferenciasArquivosEstaticos', 'LoggingProposal', 'CookBook', 'NewformsHOWTO', 'DjangoOnWindows/TestSuiteFailures', 'ManyToManyRelations', 'AjaxDojoFormSub', 'DocSprint12Apr', 'Version1.1Features', 'SummerOfCode2007', 'SummerOfCode2006', 'UnicodeBranch', 'FullHistory', 'AJAXWidgetComboBox', 'SlugifyUniquely', 'PyPy', 'SummerOfCode2008', 'TracLogging', 'CommonCausesForTranslationProblems', 'ComoUsarPermissoes', 'GeoDjangoBackground', 'DeployComNginxEWSGI', 'CookBookUsingExternalMedia', 'CookBookDynamicZip', 'InitdScriptForLinux', 'ProgrammingError', 'SprintSausalitoJuly2008', 'TracUnicode', 'gedit', 'TeHospedo', 'ExtendingAdminTemplates', 'TracRss', 'CookBookMakeURLConfDRY', 'Version1.4Roadmap', 'CaseStudyLeads', 'GoFlow:older_news', 'CaseStudyQuestionnaire', 'YUI-Django-AutoComplete', 'PastSprints', 'SortedIntThenAlpha', 'ExprTag', 'DocItOverview', 'CookBookMultiLevelMultiComponentDataModel', 'CookBookPredicates', 'goflow:changelog', 'SplitSettings', 'BuildFarm', 'HttpResponse', 'OracleBranch', 'IdeasForEnterpriseSite', 'CookBookIPAccessMiddleware', 'CalendarRunThough', 'DjangoDocumentKoreanTranslation/frontpage.txt', 'UpgradingNotes', 'MagicRemovalCheatSheet', 'RelatedProjects', 'ForeignKey', 'CookBookScripts', 'DjangoDocumentKoreanTranslation/frontpage-ko.txt', 'FlickrIntegration', 'best-practices-to-work-with-3rd-party-apps-and-making-yours-portable', 'DjangoInBrazilianPortuguese', 'CookBookManipulators', 'TextMate', 'SchemaEvolution', 'ImprovementsForDjangoForms', 'CookBookTemplateTagRegroup', 'Sprint200912TriangleNC', 'DreamHost', 'DeclarandoSeuProprioSignal', 'DynamicModels', 'SprintPortlandAugust2008', 'FormField', 'DjangoPoweredSites', 'Sandbox', 'InitdScriptForDebian', 'DjangoUsingFlup', 'CompositePrimaryKeyDesignNotes', 'CustomFormFields', 'ReadOnlyAdmin', 'DjangoSuccessStorySchoolBoss', 'DjangoDocumentKoreanTranslation/tutorial02', 'DjangoDocumentKoreanTranslation/tutorial03', 'DjangoDocumentKoreanTranslation/tutorial01', 'DjangoDocumentKoreanTranslation/tutorial04', 'LastUpdateContextProcessor', 'PageStatsMiddleware', 'Sprint201012Sydney', 'AppEngine', 'UsingVimWithDjango', 'best-practices-to-work-with-3rd-party-applications-and-making-yours-portable', 'AutoCompleteSolutions', 'CookBookDjangoPasswordHasherUserJs', 'PyConSprint06', 'searchengine', 'ObjectLevelCaching', 'CookBookValidateWeight', 'TracChangeset', 'Sprint201002LA', 'goflow:FAQ', 'DjangoDocumentKoreanTranslation/tutorial02-ko.txt', 'Sprint201006LA', 'CookBookTemplateFilters', 'VersionOneFeatures', 'SetupOnTiger', 'MultipleVersionsWithFCGI', 'AutoEscaping', 'CookBookPortugues', 'AmazonSimpleStorageService', 'AJAX', 'TracFineGrainedPermissions', 'TestingDjango', 'StreamingUpload', 'CookBookScriptsNoSuperUserSyncdb', 'FacebookIntegration', 'Django_and_PureFTPd', 'AddDojoEditor', 'CookBookDatabase', 'Sprint200912', 'TemplateTagsCheatSheet', 'DjangoDocumentKoreanTranslation/install', 'Sprint201111', 'MovablePythonInstall', 'Barcodes', 'AjaxDojoLogin', 'ModelInterNationalization', 'Sprint201011Berlin', 'CookBookManipulatorCustomManipulator', 'webreusHowTo', 'DocItTutorial01', '1.2ReleaseCandidateSprint', 'UsingMarkup', 'TracCgi', 'TicketClosingReasons', 'CookBookNewformsAdminAndUser', 'GoogieSpell', 'CookBookShortcuts', 'TracIni', 'DjangoDocumentKoreanTranslation/tutorial03-ko.txt', 'Sprint201011Argentina', 'SprintHostingHowto', 'AdminApplication', 'TranslateDocumentation', 'TracRevisionLog', 'MyghtyTemplatesInDjango', 'CallTag', 'CsrfProtection', 'OlderBackwardsIncompatibleChanges', 'ManyToManyManager', 'BestPracticesToWorkWith3rdPartyAppsAndMakingYoursPortable', 'ExpectedTestFailures', 'RecentChanges', 'MultipleDatabaseSupport', 'CustomUploadAndFilters', 'GenerateGenericURLs', 'CookBookNewFormsFieldOrdering', 'PreviousMultipleDatabaseBranch', 'Sprint201001Montreal', 'SimpleDebugThroughExceptions', 'InstalledAppsRevision', 'devserver_and_apache_differences', 'TracMultipleProjects', 'OnlyValidator', 'Sprint2011DjangoConUS', 'TicketClosingReasons/DocumentationVersion', 'SprintAustinAugust2008', 'django-gmap', 'Sprint201001Leipzig', 'HttpReponse', 'CMSAppsComparison', 'TracNotification', 'PDFWithJasperReports', 'ModPython', 'DjangoAndJython', 'FourDaysOnDjango', 'reading_baldurs_gate_binary_files', 'WeblogEntryFeed', 'Version1.3Blockers', 'AjaxDjangoDojoForm', 'DjangoDocumentKoreanTranslation/tutorial03.txt', 'Sprint201003TriangleNC', 'ModifiedPreorderTreeTraversal', 'CookBookManipulatorWithPostpopulatedFields', 'DjangoSpecifications/Docs/ConvertingRestToOtherFormats', 'ValidationHelperFunctionsProposal', 'CookBookScriptsAliases', 'DjangoOnAStick', 'DjangoDocumentKoreanTranslation/Dict', 'WikiMacros', 'OracleTestSetup', 'UsingTheMailingList', 'DjangoFriendlyWebHosts', 'ListColumns', 'JKM/Tickets', 'DocItFAQ', 'TracLinks', 'NonSqlBackends', 'PyCallTag', 'CookBookRequiredGroupLogin', 'Sprint2010EuroPython', 'DjangoSki', 'CookBookValidateImageWeight', 'ajax_shop_basket', 'ExtendingTemplates', 'CustomImageField', 'django_apache_and_mod_wsgi', 'Version1.2Features', 'CookBookMiddlewares', 'CookBookSplitModelsToFiles', 'DjangoDocumentKoreanTranslation/authentication.txt', 'TextImageView', 'PyCon', 'DjangoBranches', 'CookBookShortcutsPageDecoratorSimple', 'ForumAppsComparison', 'PythonScriptForParsingUrlConf', 'data_model', 'DjangoSpecifications/NfAdmin/FlexibleAppHandling', 'AutoEscapingProposals', 'CookBookDataModels']
+s.wiki.getPageInfo()
+    {'comment': 'Added a newline', 
+     'lastModified': <DateTime '20070630T12:58:10' at 25a95c0>, 
+     'version': 5, 
+     'name': 'Scaffolding', 
+     'author': 'tonnzor <tonn81@gmail.com>'}
+#s.wiki.getPageInfoVersion()
+#s.wiki.putPage()
+s.wiki.listAttachments()
+    ['Scaffolding/scaffold.py', 'Scaffolding/meta_scaffold.py']
+#s.wiki.getAttachment()
+#s.wiki.putAttachment()
+#s.wiki.putAttachmentEx()
+#s.wiki.deletePage()
+#s.wiki.deleteAttachment()
+#s.wiki.listLinks()
+s.wiki.wikiToHtml()
+    <p>
+    Scaffolding
+    </p>
+
